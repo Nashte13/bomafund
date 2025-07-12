@@ -1,0 +1,82 @@
+.contributions-container {
+    padding: 30px;
+    font-family: 'Segoe UI', sans-serif;
+    max-width: 1000px;
+    margin: auto;
+    text-align: center;
+}
+
+.contributions-container h1 {
+    color: #1e90ff;
+    font-size: 30px;
+    margin-bottom: 25px;
+}
+
+.summary-section {
+    margin-bottom: 30px;
+    font-size: 18px;
+    color: #333;
+    background-color: #f0f8ff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.contribution-list {
+    margin-bottom: 40px;
+    text-align: left;
+}
+
+.contribution-list h2 {
+    color: #1e90ff;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.contribution-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.contribution-table th,
+.contribution-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+.contribution-table th {
+    background-color: #1e90ff;
+    color: white;
+    font-weight: 500;
+}
+
+.contribution-table tr:last-child td {
+    border-bottom: none;
+}
+
+.update-button {
+    padding: 12px 24px;
+    background-color: #1e90ff;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.update-button:hover {
+    background-color: #0a4d8c;
+}
+
+.view-only-note {
+    color: #888;
+    font-size: 16px;
+    margin-top: 20px;
+    font-style: italic;
+}

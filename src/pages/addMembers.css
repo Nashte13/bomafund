@@ -1,0 +1,37 @@
+.add-members-container {
+    padding: 30px;
+    max-width: 400px;
+    margin: auto;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+}
+
+.add-members-container h1 {
+    color: #1e90ff;
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+
+.add-members-container input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.add-members-container button {
+    width: 100%;
+    padding: 12px;
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.add-members-container button:hover {
+    background-image: #0a4d8c;
+}

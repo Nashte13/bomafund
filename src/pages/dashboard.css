@@ -1,0 +1,139 @@
+.dashboard-nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #1e90ff;
+    padding: 15px;
+    border-radius: 19px;
+}
+
+.dashboard-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.dashboard-nav a:hover {
+    text-decoration: underline;
+}
+
+.profile-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-profile-pic{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+
+.dashboard-container {
+    padding: 30px;
+    max-width: 800px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.dashboard-content h1{
+    font-size: 28px;
+    color: #1e90ff;
+}
+
+.dashboard content h2{
+    font-size: 22px;
+    color: #333;
+}
+
+.group-overview {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.group-overview h3 {
+    color: #1e90ff;
+    margin-bottom: 5px;
+}
+
+.contribution-overview,
+.quick-actions {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.contribution-overview h2,
+.quick-actions h2 {
+    margin-bottom: 10px;
+    color: #1e90ff;
+}
+
+.contribution-overview p {
+    margin-bottom: 20px;
+}
+
+.group-overview button,
+.contribution-overview button,
+.quick-actions button {
+    background-color:#1e90ff ;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+
+.group-overview button:hover,
+.contribution-overview button:hover,
+.quick-actions button:hover {
+    background-color: #0a4d8c;
+}
+
+.create-group {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.create-group input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.create-group button {
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100px;
+}
+
+.create-group button:hover {
+    background-color: #0a4d8c;
+}
+

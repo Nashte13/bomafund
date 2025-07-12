@@ -1,0 +1,44 @@
+.profile-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.profile-form {
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group p {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.profile-actions {
+    margin-top: 20px;
+}
+
+.profile-actions button {
+    padding: 10px 20px;
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.profile-actions button:hover {
+    background-color: #0a4d8c;
+}

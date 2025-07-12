@@ -1,0 +1,110 @@
+.projects-container {
+    padding: 30px;
+    max-width: 800px;
+    margin: auto;
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+}
+
+.projects-container h1 {
+    color: #1e90ff;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.project-form input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.project-form button {
+    padding: 10px 20px;
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.project-form button:hover {
+    background-color: #0a4d8c;
+}
+
+.project-details {
+    margin-top: 30px;
+    background: #f0f8ff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+    text-align: left;
+}
+
+.project-details h2 {
+    color: #1e90ff;
+    margin-bottom: 10px;
+}
+
+.comments-section {
+    margin-top: 40px;
+    text-align: left;
+}
+
+.comments-section h3 {
+    color: #1e90ff;
+    margin-bottom: 10px;
+}
+
+.comments-section ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+.comments-section textarea {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.comments-section button {
+    background-color: #1e90ff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.comments-section button:hover {
+    background-color: #0a4d8c;
+}
+
+.edit-project-btn {
+    margin-top: 20px;
+    padding: 12px 24px;
+    background-color: #1e90ff;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.edit-project-btn:hover {
+    background-color: #0a4d8c;
+    transform: translateY(-1px);
+}

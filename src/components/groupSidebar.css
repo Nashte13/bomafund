@@ -1,0 +1,71 @@
+/* Sidebar container */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 260px;
+    height: 100vh;
+    background: linear-gradient(135deg, #1e90ff, #0f58a5);
+    box-shadow: 3px 0 10px rgba(0, 0, 0, 0.2);
+    transition: left 0.35s ease-in-out;
+    z-index: 1000;
+    padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+/* Close button */
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Sidebar links */
+.sidebar-link {
+    padding: 15px 25px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    transition: background 0.25s ease;
+}
+
+.sidebar-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    border-left: 4px solid #ffffff;
+}
+
+/* Sidebar menu button (☰) */
+.menu-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 1100;
+    color: #1e90ff;
+}
+
+@media (max-width: 600px) {
+    .sidebar {
+        width: 220px;
+        padding-top: 50px;
+    }
+
+    .sidebar-link {
+        font-size: 16px;
+    }
+}

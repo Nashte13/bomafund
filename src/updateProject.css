@@ -1,0 +1,47 @@
+.update-project-container {
+    padding: 30px;
+    font-family: 'Segoe UI', sans-serif;
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+}
+
+.update-project-container h1 {
+    color: #1e90ff;
+    font-size: 28px;
+    margin-bottom: 25px;
+}
+
+.update-project-container input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    margin-bottom: 18px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.submit-button {
+    padding: 12px 24px;
+    font-size: 16px;
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #0a4d8c;
+}
+
+.menu-button {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: none;
+    border: none;
+    font-size: 26px;
+    cursor: pointer;
+}
