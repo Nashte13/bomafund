@@ -16,6 +16,7 @@ import Communications from "./pages/Communications";
 import UpdateProject from "./updateProject";
 import "./App.css";
 import EditGroup from "./pages/EditGroup";
+import CreateGroup from "./pages/CreateGroup";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -130,6 +131,11 @@ function App() {
           path="/group/:groupId/edit-group"
           element={<EditGroup user={user} />}
         />
+        <Route
+          path="/create-group"
+          element={<CreateGroup user={user} />}
+        />
+
       </Routes>
     </Router>
   );

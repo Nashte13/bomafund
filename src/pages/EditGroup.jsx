@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import GroupSidebar from "../components/GroupSidebar";
-import "./editGroup.css";
+import "./EditGroup.css";
+
 
 function EditGroup({ user }) {
   const { groupId } = useParams();

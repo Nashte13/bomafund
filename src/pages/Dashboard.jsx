@@ -5,9 +5,9 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const getGreeting = () => {
     const hour = new Date().getHours();
-     if (hour <12) return 'Good Morning';
-     if (hour > 12) return 'Good afternoon';
-     return 'Good evening';
+     if (hour < 12) return "Good morning";
+     if (hour > 12) return "Good afternoon";
+     return "Good evening";
 };
 
 const getEmoji = () => {
@@ -20,10 +20,7 @@ const getEmoji = () => {
 
 
 function Dashboard({user}) {
-    const [groups, setGroups] = useState(() => {
-        return JSON.parse(localStorage.getItem('groups')) || [];
-    });
-    const [groupName, setGroupName] = useState('');
+    const [groups, setGroups] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -41,25 +38,6 @@ function Dashboard({user}) {
 
         fetchGroups();
     }, [user]);
-
-    //handle group creation
-    const handleCreateGroup = async() => {
-        if (!groupName) return alert('Enter a group name.');
-
-        try {
-            const response = await axios.post('http://localhost:5000/api/groups', {
-                name: groupName,
-                leaderId: user.id,
-            });
-
-            const updatedGroups = [...groups, response.data.group];
-            setGroups(updatedGroups);
-            localStorage.setItem('groups', JSON.stringify(updatedGroups));
-            setGroupName('');
-        } catch (error) {
-            console.error('Error creating group:', error);
-        }
-    };
 
     return (
         <div className='dashboard-container'>
@@ -97,14 +75,11 @@ function Dashboard({user}) {
 
                 <div className='create-group'>
                     <h2>Create a New Group</h2>
-                    <input 
-                        type='text'
-                        placeholder='Enter group name'
-                        value={groupName}
-                        onChange={(e) => setGroupName(e.target.value)}
-                    />
-                    <button onClick={handleCreateGroup} >Create Group</button>
+                    <button onClick={() => navigate('/create-group')}>+ New Group</button>
                 </div>
+
+
+                
             </div>
         </div>
 

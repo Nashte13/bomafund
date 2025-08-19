@@ -1,0 +1,42 @@
+.edit-group-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.edit-group-container h2 {
+  color: #1e90ff;
+  margin-bottom: 20px;
+}
+
+.edit-group-container label {
+  display: block;
+  margin: 10px 0 5px;
+  font-weight: bold;
+}
+
+.edit-group-container input,
+.edit-group-container textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.edit-group-container button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #1e90ff;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-group-container button:hover {
+  background-color: #0a4d8c;
+}

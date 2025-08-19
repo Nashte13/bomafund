@@ -92,12 +92,15 @@
 .group-overview button,
 .contribution-overview button,
 .quick-actions button {
-    background-color:#1e90ff ;
+      background: linear-gradient(135deg, #1e90ff, #0f58a5);
     color: white;
     border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
     cursor: pointer;
+    transition: all 0.25s ease-in-out;
     margin-top: 10px;
 }
 
@@ -105,7 +108,9 @@
 .group-overview button:hover,
 .contribution-overview button:hover,
 .quick-actions button:hover {
-    background-color: #0a4d8c;
+    background: linear-gradient(135deg, #0a4d8c, #063970);
+    transform: translateY(-2px);
+     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .create-group {
@@ -136,4 +141,48 @@
 .create-group button:hover {
     background-color: #0a4d8c;
 }
+
+/* Dashboard Mobile Responsiveness */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 15px;
+  }
+
+  .dashboard-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 10px;
+  }
+
+  .dashboard-content {
+    gap: 15px;
+  }
+
+  .group-overview {
+    text-align: center;
+  }
+
+  .group-overview h3 {
+    font-size: 18px;
+  }
+
+  .group-overview button {
+    width: 100%;
+  }
+
+  .create-group {
+    padding: 15px;
+  }
+
+  .create-group input {
+    font-size: 14px;
+  }
+
+  .create-group button {
+    width: 100%;
+    font-size: 14px;
+  }
+}
+
 

@@ -1,79 +1,151 @@
 .group-home-container {
-    text-align: center;
-    padding: 30px;
-    font-family: 'Arial', sans-serif;
-    position: relative;
+  text-align: center;
+  padding: 30px;
+  font-family: 'Arial', sans-serif;
+  position: relative;
+  background-color: #f4f8fc;
+  min-height: 100vh;
 }
 
-.group-home-container h1 {
-    color: #1e90ff;
-    font-size: 28px;
-    margin-bottom: 10px;
+/* Menu button (☰ / ✕) */
+.menu-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: #1e90ff;
+  color: blue;
+  border: none;
+  font-size: 22px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  z-index: 1100;
 }
 
-.group-info {
-    margin-top: 20px;
+.menu-button:hover {
+  transform: scale(1.1);
 }
 
 .group-logo {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-bottom: 15px;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  border: 3px solid #1e90ff;
 }
 
-.group-info p {
-    font-size: 18px;
-    color: #555;
+.group-info-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+  margin-bottom: 25px;
 }
 
-/* Sidebar Menu */
-.menu-button {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    background: none;
-    border: none;
-    font-size: 26px;
-    cursor: pointer;
+.group-info-card h1 {
+  color: #1e90ff;
+  font-size: 26px;
+  margin-bottom: 15px;
 }
 
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: -250px;
-    width: 250px;
-    height: 100%;
-    background: #1e90ff;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-    transition: left 0.3s ease-in-out;
-    padding-top: 50px;
-    text-align: left;
+.group-info-card p {
+  font-size: 18px;
+  color: #444;
+  margin: 5px 0;
 }
 
-.sidebar.open {
-    left: 0;
+/* Overview Section */
+.group-overview-section {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: none;
-    border: none;
-    font-size: 24px;
-    color: white;
-    cursor: pointer;
+.overview-card {
+  flex: 1;
+  min-width: 180px;
+  max-width: 220px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 3px 8px rgba(0,0,0,0.08);
+  cursor: pointer;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(15px);
+  animation: fadeInUp 0.5s ease forwards;
 }
 
-.sidebar-link {
-    display: block;
-    color: white;
-    padding: 15px;
-    text-decoration: none;
-    font-size: 18px;
+/* Stagger effect for cards */
+.overview-card:nth-child(1) { animation-delay: 0.1s; }
+.overview-card:nth-child(2) { animation-delay: 0.2s; }
+.overview-card:nth-child(3) { animation-delay: 0.3s; }
+.overview-card:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.sidebar-link:hover {
-    background: #0a4d8c;
+.overview-card:hover {
+  transform: translateY(-5px);
+  background: #f0f8ff;
+}
+
+.overview-card h3 {
+  margin-bottom: 8px;
+  color: #1e90ff;
+}
+
+.overview-card p {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 18px;
+  color: #555;
+}
+
+/* 📱 Mobile Responsive */
+@media (max-width: 768px) {
+  .group-overview-section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .overview-card {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* Sidebar overlay (click outside effect) */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3);
+  z-index: 900;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
 }
