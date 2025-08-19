@@ -80,44 +80,140 @@ app.post("/api/login", (req, res) => {
   );
 });
 
-// ✅ Get User's Groups (based on phone number match using DB)
-app.get("/api/users/:id/groups", (req, res) => {
-    const userId = req.params.id;
-  
-    db.query("SELECT * FROM users WHERE id = ?", [userId], (err, results) => {
-      if (err) {
-        console.error("DB error:", err);
-        return res.status(500).json({ message: "Database error" });
-      }
-  
-      if (results.length === 0) {
-        return res.status(404).json({ message: "User not found." });
-      }
-  
-      const user = results[0];
-  
-      // Get groups from memory (temporary)
-      const userGroups = groups.filter((g) =>
-        g.members.some((m) => m.phoneNumber === user.phoneNumber)
-      );
-  
-      res.status(200).json({ groups: userGroups });
+// ✅ Create a Group (MySQL)
+app.post("/api/groups", (req, res) => {
+  const { name, motto, mission, profilePicture, leaderId } = req.body;
+
+  if (!name || !leaderId) {
+    return res.status(400).json({ message: "Group name and leaderId are required." });
+  }
+
+  const id = Date.now().toString();
+
+  const sql = `
+    INSERT INTO group_data (id, name, motto, mission, profilePicture, leaderId)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
+
+  db.query(sql, [id, name, motto || "", mission || "", profilePicture || "", leaderId], (err, result) => {
+    if (err) {
+      console.error("❌ Error inserting group:", err);
+      return res.status(500).json({ message: "Database insert failed", error: err });
+    }
+
+    console.log("✅ Group created:", { id, name, motto, mission, profilePicture, leaderId });
+    return res.status(201).json({
+      message: "Group created successfully.",
+      group: { id, name, motto, mission, profilePicture, leaderId }
     });
   });
+});
+
+// ✅ Get User's Groups (leader OR member)
+app.get("/api/users/:id/groups", (req, res) => {
+  const userId = req.params.id;
+
+  // First check if user exists
+  db.query("SELECT * FROM users WHERE id = ?", [userId], (err, results) => {
+    if (err) {
+      console.error("DB error:", err);
+      return res.status(500).json({ message: "Database error" });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Get groups where user is leader
+    const leaderSql = "SELECT * FROM group_data WHERE leaderId = ?";
+
+    // Get groups where user is member
+    const memberSql = `
+      SELECT g.* 
+      FROM group_data g
+      INNER JOIN group_members gm ON g.id = gm.groupId
+      WHERE gm.userId = ?
+    `;
+
+    db.query(leaderSql, [userId], (err, leaderGroups) => {
+      if (err) {
+        console.error("❌ Error fetching leader groups:", err);
+        return res.status(500).json({ message: "Failed to fetch leader groups" });
+      }
+
+      db.query(memberSql, [userId], (err, memberGroups) => {
+        if (err) {
+          console.error("❌ Error fetching member groups:", err);
+          return res.status(500).json({ message: "Failed to fetch member groups" });
+        }
+
+        // Merge both (avoid duplicates if user is leader & member of same group)
+        const allGroups = [...leaderGroups, ...memberGroups].reduce((acc, group) => {
+          if (!acc.find((g) => g.id === group.id)) {
+            acc.push(group);
+          }
+          return acc;
+        }, []);
+
+        console.log("✅ Groups fetched for user:", userId, allGroups);
+        res.status(200).json({ groups: allGroups });
+      });
+    });
+  });
+});
+
+
+
+  // ✅ Update Group Details
+app.put("/api/groups/:groupId", (req, res) => {
+  const { groupId } = req.params;
+  const { name, motto, mission, profilePicture } = req.body;
+
+  const sql = `
+    UPDATE group_data 
+    SET name = ?, motto = ?, mission = ?, profilePicture = ?
+    WHERE id = ?
+  `;
+
+  db.query(sql, [name, motto, mission, profilePicture, groupId], (err, result) => {
+    if (err) {
+      console.error("❌ Error updating group:", err);
+      return res.status(500).json({ message: "Failed to update group" });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    console.log("✅ Group updated:", groupId);
+    res.status(200).json({ message: "Group updated successfully" });
+  });
+});
+
   
 
-// ✅ Get Group Details (used by GroupHome)
+// ✅ Get Group Details (from MySQL)
 app.get("/api/groups/:groupId", (req, res) => {
   const { groupId } = req.params;
   console.log("Fetching group with ID:", groupId);
-  const group = groups.find((g) => g.id === groupId);
 
-  if (!group) {
-    return res.status(404).json({ message: "Group not found" });
-  }
+  const sql = "SELECT * FROM group_data WHERE id = ?";
 
-  res.status(200).json({ group });
+  db.query(sql, [groupId], (err, results) => {
+    if (err) {
+      console.error("❌ DB error fetching group:", err);
+      return res.status(500).json({ message: "Database error" });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    console.log("✅ Group fetched:", results[0]);
+    res.status(200).json({ group: results[0] });
+  });
 });
+
 
 // ✅ Server Startup
 const PORT = process.env.PORT || 5000;

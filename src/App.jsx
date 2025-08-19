@@ -15,6 +15,7 @@ import Projects from "./pages/Projects";
 import Communications from "./pages/Communications";
 import UpdateProject from "./updateProject";
 import "./App.css";
+import EditGroup from "./pages/EditGroup";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -124,6 +125,10 @@ function App() {
               <p>The page you are looking for does not exist.</p>
             </div>
           }
+        />
+        <Route
+          path="/group/:groupId/edit-group"
+          element={<EditGroup user={user} />}
         />
       </Routes>
     </Router>
