@@ -1,32 +1,29 @@
+/* === Layout with Sidebar === */
+.group-home-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f8fc;
+}
+
 .group-home-container {
-  text-align: center;
+  flex: 1;
   padding: 30px;
   font-family: 'Arial', sans-serif;
-  position: relative;
-  background-color: #f4f8fc;
-  min-height: 100vh;
+  text-align: center;
+  transition: margin-left 0.3s ease;
 }
 
-/* Menu button (☰ / ✕) */
-.menu-button {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background: #1e90ff;
-  color: blue;
-  border: none;
-  font-size: 22px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-  z-index: 1100;
+/* Adjust content when sidebar is open (desktop) */
+@media (min-width: 769px) {
+  .group-home-container {
+    margin-left: 70px; /* collapsed sidebar */
+  }
+  .app-sidebar.open ~ .group-home-container {
+    margin-left: 200px; /* expanded sidebar */
+  }
 }
 
-.menu-button:hover {
-  transform: scale(1.1);
-}
-
+/* === Group Info === */
 .group-logo {
   width: 110px;
   height: 110px;
@@ -55,7 +52,7 @@
   margin: 5px 0;
 }
 
-/* Overview Section */
+/* === Overview Section with Animation === */
 .group-overview-section {
   display: flex;
   justify-content: space-around;
@@ -78,21 +75,15 @@
   animation: fadeInUp 0.5s ease forwards;
 }
 
-/* Stagger effect for cards */
+/* Stagger effect */
 .overview-card:nth-child(1) { animation-delay: 0.1s; }
 .overview-card:nth-child(2) { animation-delay: 0.2s; }
 .overview-card:nth-child(3) { animation-delay: 0.3s; }
 .overview-card:nth-child(4) { animation-delay: 0.4s; }
 
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .overview-card:hover {
@@ -111,6 +102,7 @@
   color: #333;
 }
 
+/* === Loading State === */
 .loading {
   text-align: center;
   margin-top: 50px;
@@ -120,6 +112,11 @@
 
 /* 📱 Mobile Responsive */
 @media (max-width: 768px) {
+  .group-home-container {
+    padding: 15px;
+    margin-left: 0; /* sidebar overlays */
+  }
+
   .group-overview-section {
     flex-direction: column;
     align-items: center;
@@ -129,23 +126,4 @@
     width: 100%;
     max-width: 300px;
   }
-}
-
-/* Sidebar overlay (click outside effect) */
-.sidebar-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.3);
-  z-index: 900;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.sidebar-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
 }

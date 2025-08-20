@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import GroupSidebar from "../components/GroupSidebar";
+import Sidebar from "../components/GroupSidebar"; // ✅ new sidebar
 import "./groupHome.css";
 
 function GroupHome() {
   const { groupId } = useParams();
   const navigate = useNavigate();
   const [group, setGroup] = useState(null);
-  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -27,17 +26,12 @@ function GroupHome() {
   }
 
   return (
-    <div className="group-home-container">
-      {/* Sidebar Toggle Button */}
-      <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)}>
-        {menuOpen ? "✕" : "☰"}
-      </button>
+    <div className="group-home-layout">
+      {/* ✅ Sidebar */}
+      <Sidebar />
 
-      {/* Sidebar */}
-      <GroupSidebar menuOpen={menuOpen} closeMenu={() => setMenuOpen(false)} />
-
-      {/* Group Info */}
-      <div className="group-info-wrapper">
+      {/* ✅ Main Content */}
+      <main className="group-home-container">
         <div className="group-info-card">
           <img
             src={group.profilePicture || "/default-group.png"}
@@ -68,7 +62,7 @@ function GroupHome() {
             onClick={() => navigate(`/group/${groupId}/contributions`)}
           >
             <h3>💰 Contributions</h3>
-            <p>KES 0</p> {/* Placeholder until DB integration */}
+            <p>KES 0</p>
           </div>
 
           <div
@@ -76,7 +70,7 @@ function GroupHome() {
             onClick={() => navigate(`/group/${groupId}/projects`)}
           >
             <h3>📂 Projects</h3>
-            <p>0</p> {/* Placeholder */}
+            <p>0</p>
           </div>
 
           <div
@@ -84,10 +78,10 @@ function GroupHome() {
             onClick={() => navigate(`/group/${groupId}/communications`)}
           >
             <h3>💬 Messages</h3>
-            <p>0</p> {/* Placeholder */}
+            <p>0</p>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
