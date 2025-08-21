@@ -23,33 +23,67 @@
   }
 }
 
-/* === Group Info === */
-.group-logo {
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  margin-bottom: 15px;
-  border: 3px solid #1e90ff;
-}
-
+/* === Group Header (details left, logo right) === */
 .group-info-card {
   background: white;
   padding: 25px;
   border-radius: 12px;
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
   margin-bottom: 25px;
 }
 
-.group-info-card h1 {
-  color: #1e90ff;
-  font-size: 26px;
-  margin-bottom: 15px;
+.group-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: center;
+  text-align: left;
 }
 
-.group-info-card p {
-  font-size: 18px;
+.group-meta h1 {
+  color: #1e90ff;
+  font-size: 26px;
+  margin: 0 0 12px 0;
+}
+
+.group-meta p {
+  font-size: 16px;
   color: #444;
-  margin: 5px 0;
+  margin: 6px 0;
+}
+
+/* Logo image */
+.group-logo {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 3px solid #1e90ff;
+  object-fit: cover;
+}
+
+/* Fallback logo (first letter) */
+.group-logo-fallback {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 3px solid #1e90ff;
+  background: linear-gradient(135deg, #e9f3ff, #d8eaff);
+  display: grid;
+  place-items: center;
+  font-size: 48px;
+  font-weight: 800;
+  color: #1e90ff;
+}
+
+/* Mobile: stack header with logo on top */
+@media (max-width: 768px) {
+  .group-header {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .group-meta h1 {
+    font-size: 22px;
+  }
 }
 
 /* === Overview Section with Animation === */
@@ -108,6 +142,37 @@
   margin-top: 50px;
   font-size: 18px;
   color: #555;
+}
+
+/* === Mobile Hamburger Button === */
+.mobile-hamburger {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 8px;
+  cursor: pointer;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.mobile-hamburger span {
+  font-size: 28px;
+  color: #1e90ff; /* bluish lines by default */
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.mobile-hamburger:hover {
+  background: #0a4d8c; /* dark blue fill */
+}
+
+.mobile-hamburger:hover span {
+  color: #fff; /* white lines when hovered */
 }
 
 /* 📱 Mobile Responsive */

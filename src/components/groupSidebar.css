@@ -7,7 +7,7 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(12px);
   background: rgba(30, 144, 255, 0.9); /* Blue glass effect */
-  transition: transform 0.35s ease;
+  transition: transform 0.35s ease, width 0.3s ease;
   z-index: 1000;
   overflow: hidden;
 }
@@ -22,7 +22,7 @@
   transform: translateX(0);
 }
 
-/* Tablet/Desktop (always visible, collapsed when closed) */
+/* Tablet/Desktop (collapsed/expanded) */
 .app-sidebar.desktop {
   width: 70px;
 }
@@ -35,11 +35,18 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  /* scroll removed from here ❌ */
+}
+
+.app-sidebar.mobile.open .inner {
+  overflow-y: auto; /* ✅ scroll only on mobile open */
+  scrollbar-width: thin;
 }
 
 .app-sidebar header {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   padding: 12px;
 }
 
@@ -49,6 +56,9 @@
   color: white;
   font-size: 24px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sidebar-title {
@@ -56,19 +66,18 @@
   font-size: 18px;
   font-weight: bold;
   color: white;
-  opacity: 0;
-  transition: opacity 0.3s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.app-sidebar.open .sidebar-title {
-  opacity: 1;
-}
-
+/* Nav links */
 .app-sidebar nav {
   display: flex;
   flex-direction: column;
   gap: 5px;
   padding: 10px;
+  position: relative;
 }
 
 .app-sidebar nav a {
@@ -79,8 +88,9 @@
   border-radius: 8px;
   color: white;
   text-decoration: none;
-  opacity: 0.8;
+  opacity: 0.85;
   transition: background 0.3s, opacity 0.3s;
+  position: relative; /* for tooltips */
 }
 
 .app-sidebar nav a:hover {
@@ -92,6 +102,53 @@
   display: none;
 }
 
+/* Show names only when expanded */
 .app-sidebar.open nav a p {
   display: block;
 }
+
+/* Align icons & burger in collapsed state */
+.app-sidebar.desktop:not(.open) nav a,
+.app-sidebar.desktop:not(.open) header {
+  justify-content: center;
+}
+
+.app-sidebar.desktop:not(.open) header {
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.app-sidebar.desktop:not(.open) header button {
+  margin: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Tooltips (collapsed desktop only) --- */
+.app-sidebar.desktop:not(.open) nav a::after {
+  content: attr(title);
+  position: fixed; /* ✅ float relative to viewport, not clipped by sidebar */
+  left: 90px;      
+  top: auto;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  font-size: 13px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 1500;   /* ✅ ensure it floats above everything */
+}
+
+/* Position tooltip vertically aligned with icon */
+.app-sidebar.desktop:not(.open) nav a:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(5px); /* smooth little slide */
+}
+
