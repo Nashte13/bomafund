@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import "./dashboard.css";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate, NavLink, useLocation } from "react-router-dom";
 
 const getGreeting = () => {
   const hour = new Date().getHours();
   if (hour < 12) return "Good morning";
-  if (hour > 12) return "Good afternoon";
+  if (hour > 12 && hour < 19) return "Good afternoon";
   return "Good evening";
 };
 
@@ -21,23 +21,33 @@ function Dashboard({ user }) {
   const [groups, setGroups] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  useEffect(() => {
+  // ✅ Reusable fetch function
+  const fetchGroups = useCallback(async () => {
     if (!user) return;
-    const fetchGroups = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/api/users/${user.id}/groups`
-        );
-        setGroups(response.data.groups);
-        localStorage.setItem("groups", JSON.stringify(response.data.groups));
-      } catch (error) {
-        console.error("Error fetching groups:", error);
-      }
-    };
-
-    fetchGroups();
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/users/${user.id}/groups`
+      );
+      setGroups(response.data.groups);
+      localStorage.setItem("groups", JSON.stringify(response.data.groups));
+    } catch (error) {
+      console.error("❌ Error fetching groups:", error);
+    }
   }, [user]);
+
+  // ✅ Fetch groups when Dashboard mounts or user changes
+  useEffect(() => {
+    fetchGroups();
+  }, [fetchGroups, user]);
+
+  // ✅ Re-fetch groups whenever user navigates back to /dashboard
+  useEffect(() => {
+    if (location.pathname === "/dashboard") {
+      fetchGroups();
+    }
+  }, [location, fetchGroups]);
 
   return (
     <div className="dashboard-container">

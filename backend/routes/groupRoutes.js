@@ -58,4 +58,35 @@ router.delete("/groups/:groupId/members/:userId", (req, res) => {
   });
 });
 
+// --- Delete Group (leader only) ---
+router.delete("/groups/:groupId/delete/:userId", (req, res) => {
+  const { groupId, userId } = req.params;
+
+  // Step 1: Check group
+  db.query("SELECT * FROM group_data WHERE id = ?", [groupId], (err, results) => {
+    if (err) return res.status(500).json({ message: "Database error" });
+    if (results.length === 0) return res.status(404).json({ message: "Group not found" });
+
+    const group = results[0];
+
+    // Step 2: Verify leader
+    if (group.leaderId !== userId) {
+      return res.status(403).json({ message: "Only the group creator can delete this group." });
+    }
+
+    // Step 3: Delete members first
+    db.query("DELETE FROM group_members WHERE groupId = ?", [groupId], (err) => {
+      if (err) return res.status(500).json({ message: "Failed to delete group members" });
+
+      // Step 4: Delete group itself
+      db.query("DELETE FROM group_data WHERE id = ?", [groupId], (err) => {
+        if (err) return res.status(500).json({ message: "Failed to delete group" });
+
+        console.log(`🗑️ Group ${groupId} deleted by leader ${userId}`);
+        res.json({ message: "Group deleted successfully" });
+      });
+    });
+  });
+});
+
 module.exports = { router };

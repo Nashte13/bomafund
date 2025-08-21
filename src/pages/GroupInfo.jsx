@@ -15,6 +15,9 @@ function GroupInfo({ user }) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
 
+  // Toast state
+  const [toast, setToast] = useState({ message: "", type: "" });
+
   useEffect(() => {
     const fetchGroup = async () => {
       try {
@@ -31,12 +34,19 @@ function GroupInfo({ user }) {
     return <p className="loading">Loading group info...</p>;
   }
 
-  const isLeader = user && group.creatorId === user.id;
+  // ✅ DB uses leaderId (not creatorId)
+  const isLeader = user && group.leaderId === user.id;
+
+  // --- Toast Helper ---
+  const showToast = (message, type = "success") => {
+    setToast({ message, type });
+    setTimeout(() => setToast({ message: "", type: "" }), 3000);
+  };
 
   // --- Handlers ---
   const handleEditGroupInfo = () => {
     if (!isLeader) {
-      alert("❌ Only the Group creator can edit the group info.");
+      showToast("❌ Only the Group creator can edit the group info.", "error");
       return;
     }
     navigate(`/group/${groupId}/edit-info`);
@@ -47,22 +57,24 @@ function GroupInfo({ user }) {
       await axios.delete(
         `http://localhost:5000/api/groups/${groupId}/members/${user.id}`
       );
-      alert("You are no longer a member of this Group. Redirecting to Dashboard...");
-      setTimeout(() => navigate("/dashboard"), 2000);
+      showToast("🚪 You have left this group.", "success");
+      setTimeout(() => navigate("/dashboard"), 1000);
     } catch (err) {
       console.error("❌ Error exiting group:", err);
-      alert("Failed to exit group. Please try again.");
+      showToast("❌ Failed to exit group. Please try again.", "error");
     }
   };
 
   const confirmDeleteGroup = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/groups/${groupId}`);
-      alert("✅ Group has been deleted. Redirecting to Dashboard...");
-      navigate("/dashboard");
+      await axios.delete(
+        `http://localhost:5000/api/groups/${groupId}/delete/${user.id}`
+      );
+      showToast("✅ Group deleted successfully.", "success");
+      setTimeout(() => navigate("/dashboard"), 1000);
     } catch (err) {
       console.error("❌ Error deleting group:", err);
-      alert("Failed to delete group. Please try again.");
+      showToast("❌ Failed to delete group. Please try again.", "error");
     }
   };
 
@@ -139,7 +151,10 @@ function GroupInfo({ user }) {
         <div className="modal-overlay">
           <div className="modal-box">
             <h3>⚠️ Confirm Delete</h3>
-            <p>Are you sure you want to delete <strong>{group.name}</strong>?<br/>This action cannot be undone.</p>
+            <p>
+              Are you sure you want to delete <strong>{group.name}</strong>?<br/>
+              This action cannot be undone.
+            </p>
             <div className="modal-actions">
               <button className="cancel-btn" onClick={() => setShowDeleteModal(false)}>
                 Cancel
@@ -149,6 +164,13 @@ function GroupInfo({ user }) {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* --- Toast Notification --- */}
+      {toast.message && (
+        <div className={`toast ${toast.type}`}>
+          {toast.message}
         </div>
       )}
     </div>
