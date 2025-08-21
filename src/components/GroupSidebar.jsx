@@ -94,6 +94,7 @@ function GroupSidebar({ menuOpen, onClose, groupName }) {
             <p>Messages</p>
           </Link>
 
+          {/* ✅ Group Info placed before Dashboard */}
           <Link
             to={`/group/${groupId}/info`}
             onClick={handleClose}

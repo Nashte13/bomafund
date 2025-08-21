@@ -11,6 +11,10 @@ function GroupInfo({ user }) {
   const [group, setGroup] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // Modals
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
+
   useEffect(() => {
     const fetchGroup = async () => {
       try {
@@ -23,19 +27,47 @@ function GroupInfo({ user }) {
     fetchGroup();
   }, [groupId]);
 
-  const handleExitGroup = async () => {
-    alert("You are no longer a member of this Group. Redirecting to Dashboard...");
-    setTimeout(() => navigate("/dashboard"), 2000);
-  };
-
   if (!group) {
-    return <p className="group-info-page-loading">Loading group info...</p>;
+    return <p className="loading">Loading group info...</p>;
   }
 
   const isLeader = user && group.creatorId === user.id;
 
+  // --- Handlers ---
+  const handleEditGroupInfo = () => {
+    if (!isLeader) {
+      alert("❌ Only the Group creator can edit the group info.");
+      return;
+    }
+    navigate(`/group/${groupId}/edit-info`);
+  };
+
+  const confirmExitGroup = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:5000/api/groups/${groupId}/members/${user.id}`
+      );
+      alert("You are no longer a member of this Group. Redirecting to Dashboard...");
+      setTimeout(() => navigate("/dashboard"), 2000);
+    } catch (err) {
+      console.error("❌ Error exiting group:", err);
+      alert("Failed to exit group. Please try again.");
+    }
+  };
+
+  const confirmDeleteGroup = async () => {
+    try {
+      await axios.delete(`http://localhost:5000/api/groups/${groupId}`);
+      alert("✅ Group has been deleted. Redirecting to Dashboard...");
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("❌ Error deleting group:", err);
+      alert("Failed to delete group. Please try again.");
+    }
+  };
+
   return (
-    <div className="group-info-page-layout">
+    <div className="group-info-layout">
       {/* Sidebar */}
       <GroupSidebar 
         menuOpen={menuOpen} 
@@ -44,18 +76,14 @@ function GroupInfo({ user }) {
       />
 
       {/* Main content */}
-      <main className="group-info-page-container">
-        <div className="group-info-page-card">
+      <main className="group-info-container">
+        <div className="group-info-cardx">
           {/* Group Logo */}
-          <div className="group-info-page-logo-holder">
+          <div className="group-logo-holderx">
             {group.profilePicture ? (
-              <img 
-                src={group.profilePicture} 
-                alt="Group Logo" 
-                className="group-info-page-logo" 
-              />
+              <img src={group.profilePicture} alt="Group Logo" className="group-logox" />
             ) : (
-              <div className="group-info-page-logo-placeholder">
+              <div className="group-logo-placeholderx">
                 {group.name?.charAt(0).toUpperCase()}
               </div>
             )}
@@ -67,24 +95,62 @@ function GroupInfo({ user }) {
           <p><strong>Mission:</strong> {group.mission || "No mission set"}</p>
 
           {/* Buttons */}
-          <div className="group-info-page-actions">
-            {isLeader && (
-              <button 
-                className="group-info-page-edit-btn"
-                onClick={() => navigate(`/group/${groupId}/edit-info`)}
-              >
-                Edit Group Info
-              </button>
-            )}
-            <button 
-              className="group-info-page-exit-btn" 
-              onClick={handleExitGroup}
-            >
+          <div className="group-info-actionsx">
+            <button className="edit-btn" onClick={handleEditGroupInfo}>
+              Edit Group Info
+            </button>
+
+            <button className="exit-btn" onClick={() => setShowExitModal(true)}>
               Exit Group
             </button>
+
+            {isLeader && (
+              <button 
+                className="delete-btn" 
+                onClick={() => setShowDeleteModal(true)}
+              >
+                Delete Group
+              </button>
+            )}
           </div>
         </div>
       </main>
+
+      {/* --- Exit Confirmation Modal --- */}
+      {showExitModal && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <h3>🚪 Leave Group</h3>
+            <p>Are you sure you want to exit <strong>{group.name}</strong>?</p>
+            <div className="modal-actions">
+              <button className="cancel-btn" onClick={() => setShowExitModal(false)}>
+                Cancel
+              </button>
+              <button className="confirm-exit-btn" onClick={confirmExitGroup}>
+                Yes, Exit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* --- Delete Confirmation Modal --- */}
+      {showDeleteModal && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <h3>⚠️ Confirm Delete</h3>
+            <p>Are you sure you want to delete <strong>{group.name}</strong>?<br/>This action cannot be undone.</p>
+            <div className="modal-actions">
+              <button className="cancel-btn" onClick={() => setShowDeleteModal(false)}>
+                Cancel
+              </button>
+              <button className="confirm-delete-btn" onClick={confirmDeleteGroup}>
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
