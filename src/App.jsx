@@ -17,6 +17,8 @@ import UpdateProject from "./updateProject";
 import "./App.css";
 import EditGroup from "./pages/EditGroup";
 import CreateGroup from "./pages/CreateGroup";
+import EditGroupInfo from "./pages/EditGroupInfo";
+import GroupInfo from "./pages/GroupInfo";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -115,7 +117,34 @@ function App() {
               <UpdateProject user={user} />
             </ProtectedRoute>
           }
-        /> 
+        />
+
+        <Route
+          path="/group/:groupId/edit-group"
+          element={
+            <ProtectedRoute user={user}>
+              <EditGroup user={user} />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/create-group"
+          element={
+            <ProtectedRoute user={user}>
+              <CreateGroup user={user} />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/group/:groupId/info"
+          element={
+            <ProtectedRoute user={user}>
+              <GroupInfo user={user} />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Fallback Route */}
         <Route
@@ -127,15 +156,15 @@ function App() {
             </div>
           }
         />
-        <Route
-          path="/group/:groupId/edit-group"
-          element={<EditGroup user={user} />}
-        />
-        <Route
-          path="/create-group"
-          element={<CreateGroup user={user} />}
-        />
 
+        <Route
+          path="/group/:groupId/edit-info"
+          element={
+            <ProtectedRoute user={user}>
+              <EditGroupInfo user={user} />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );
