@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
+import logo from '../assets/logo.png';
 import "./dashboard.css";
+
 import { useNavigate, NavLink, useLocation } from "react-router-dom";
 
 const APP_NAME = "BomaFund";
@@ -60,7 +62,7 @@ function Dashboard({ user }) {
       {/* Brand strip */}
       <div className="brand-bar">
         <img
-          src="/logo/funding.png"
+          src={logo}
           alt="App Logo"
           className="brand-logo"
         />
@@ -97,7 +99,7 @@ function Dashboard({ user }) {
         onClick={() => setSidebarOpen(!sidebarOpen)}
         aria-label="Toggle menu"
       >
-        <span className="hamburger"></span>
+        <div className="hamburger"></div>
       </button>
 
       <div className={`mobile-sidebar ${sidebarOpen ? "open" : ""}`}>
