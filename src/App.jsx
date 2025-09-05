@@ -21,15 +21,33 @@ import EditGroupInfo from "./pages/EditGroupInfo";
 import GroupInfo from "./pages/GroupInfo";
 import ForgotPassword from "./pages/forgotPassword";
 import ResetPassword from "./pages/resetPassword";
+import SplashScreen from "./pages/SplashScreen";
 
 function App() {
   const [user, setUser] = useState(() => {
     return JSON.parse(localStorage.getItem("user")) || null;
   });
 
+  const [loading, setLoading] = useState(true);
+  const [fadingOut, setFadingOut] = useState(false);
+
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(user));
   }, [user]);
+
+  // Splash timer
+   useEffect(() => {
+    const timer1 = setTimeout(() => setFadingOut(true), 2000); // start fade at 2s
+    const timer2 = setTimeout(() => setLoading(false), 2800); // fully remove at 2.8s
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, []);
+
+  if (loading) {
+    return <SplashScreen fadingOut={fadingOut} />;
+  }
 
   return (
     <Router>
@@ -38,8 +56,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/forgot-password" element={<forgotPassword />} />
-        <Route path="/reset-password" element={<resetPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* Protected Routes */}
         <Route
@@ -122,7 +140,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/group/:groupId/edit-group"
           element={
@@ -131,7 +148,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/create-group"
           element={
@@ -140,7 +156,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/group/:groupId/info"
           element={
@@ -149,7 +164,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/group/:groupId/edit-info"
           element={

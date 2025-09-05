@@ -1,31 +1,106 @@
+:root {
+  --brand-dark: #081F5C;
+  --brand-main: #334EAC;
+  --brand-accent: #7096D1;
+  --brand-light: #D0E3FF;
+  --brand-bg: #E7F1FF;
+  --bg-light: #F9FCFF;
+}
+
+/* ===== Container ===== */
 .home-container {
-  text-align: center;
-  background-color: #f5f5f5;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-
-}
-
-.home-header {
-  background-color: #1e90ff;
+  background: linear-gradient(135deg, var(--brand-dark), var(--brand-main));
   padding: 20px;
-  border-radius: 10px;
-  color: white;
+  text-align: center;
 }
 
-button {
-  margin: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
+/* ===== Header Card ===== */
+.home-header {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  padding: 40px 28px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+  animation: fadeInUp 0.8s ease;
+}
+
+/* Title */
+.brand-title {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: var(--brand-dark);
+}
+
+.brand-title span {
+  color: var(--brand-main);
+  font-style: italic;
+}
+
+/* Tagline */
+.tagline {
+  font-size: 15px;
+  color: var(--brand-accent);
+  margin-bottom: 22px;
+}
+
+/* CTA Buttons */
+.cta-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.primary-btn {
+  padding: 12px 22px;
+  background: linear-gradient(135deg, var(--brand-main), var(--brand-dark));
+  color: white;
+  font-weight: 700;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-button-hover {
-  background-color: #0a4d8c;
-  color: white;
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(8, 31, 92, 0.3);
+}
+
+.secondary-btn {
+  padding: 12px 22px;
+  background: var(--bg-light);
+  border: 2px solid var(--brand-main);
+  color: var(--brand-main);
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.secondary-btn:hover {
+  background: var(--brand-light);
+  transform: translateY(-2px);
+}
+
+/* ===== Animations ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeInUp 1s ease;
 }
