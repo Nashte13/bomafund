@@ -58,7 +58,7 @@ function Signup() {
     return(
         <div className='signup-container'>
             <div className='signup-form'>
-            <h1>Signup for BomaFund</h1>
+            <h1>Create Your BomaFund Account</h1>
             {successMessage && <p className='success'>{successMessage}</p>}
                 <form onSubmit={handleSubmit}>
                     <input 
