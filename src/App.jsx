@@ -20,6 +20,7 @@ import CreateGroup from "./pages/CreateGroup";
 import EditGroupInfo from "./pages/EditGroupInfo";
 import GroupInfo from "./pages/GroupInfo";
 import ForgotPassword from "./pages/forgotPassword";
+import ResetPassword from "./pages/resetPassword";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -37,7 +38,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/forgot-Password" element={<ForgotPassword />} />
+        <Route path="/forgot-password" element={<forgotPassword />} />
+        <Route path="/reset-password" element={<resetPassword />} />
 
         {/* Protected Routes */}
         <Route
@@ -148,6 +150,15 @@ function App() {
           }
         />
 
+        <Route
+          path="/group/:groupId/edit-info"
+          element={
+            <ProtectedRoute user={user}>
+              <EditGroupInfo user={user} />
+            </ProtectedRoute>
+          }
+        />
+
         {/* Fallback Route */}
         <Route
           path="*"
@@ -156,15 +167,6 @@ function App() {
               <h2>Page Not Found</h2>
               <p>The page you are looking for does not exist.</p>
             </div>
-          }
-        />
-
-        <Route
-          path="/group/:groupId/edit-info"
-          element={
-            <ProtectedRoute user={user}>
-              <EditGroupInfo user={user} />
-            </ProtectedRoute>
           }
         />
       </Routes>
