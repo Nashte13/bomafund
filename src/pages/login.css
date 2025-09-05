@@ -1,63 +1,134 @@
-.login-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: #f5f5f5;
+:root {
+  --brand-dark: #081F5C;
+  --brand-main: #334EAC;
+  --brand-accent: #7096D1;
+  --brand-light: #D0E3FF;
+  --brand-bg: #E7F1FF;
+  --bg-light: #F9FCFF;
 }
 
+/* ===== Container Background ===== */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--brand-dark), var(--brand-main));
+  padding: 20px;
+}
+
+/* ===== Login Card ===== */
 .login-form {
-    background-color: white;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 4px 9px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    text-align: center;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  padding: 32px 28px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+  animation: fadeInUp 0.6s ease;
 }
 
 .login-form h1 {
-    margin-bottom: 20px;
-    color: #1e90ff;
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--brand-dark);
 }
 
+/* ===== Inputs ===== */
 .login-form input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  width: 100%;
+  padding: 12px 14px;
+  margin: 8px 0;
+  border: 1px solid #d0d7e6;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: all 0.25s ease;
+  background: var(--bg-light);
+  box-sizing: border-box;   /* ✅ ensures same alignment with button */
 }
 
+.login-form input:focus {
+  border-color: var(--brand-main);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(51, 78, 172, 0.25);
+}
+
+/* ===== Button (aligned perfectly) ===== */
 .login-form button {
-    width: 100%;
-    padding: 10px;
-    background-color: #1e90ff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  width: 100%;
+  display: block;           /* ✅ makes button behave like input */
+  padding: 12px 14px;
+  margin: 10px 0 0;         /* ✅ aligns with inputs' spacing */
+  background: linear-gradient(135deg, var(--brand-main), var(--brand-dark));
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;   /* ✅ keeps width same as inputs */
 }
 
 .login-form button:hover {
-    background-color: #0a4d8c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(8, 31, 92, 0.3);
 }
 
+/* ===== Links ===== */
 .login-form p {
-    margin-top: 10px;
+  margin-top: 14px;
+  font-size: 14px;
+  color: var(--brand-dark);
 }
 
 .login-form a {
-    color: #1e90ff;
-    text-decoration: none;
+  color: var(--brand-main);
+  font-weight: 600;
+  text-decoration: none;
 }
 
 .login-form a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
+/* ===== Error Messages ===== */
 .error {
-    color: red;
-    font-size: 14px;
-    margin: 5x;
+  color: #d93025;
+  font-size: 13px;
+  text-align: left;
+  margin: -4px 0 6px;
+}
+
+/* Forgot Password link */
+.forgot-link {
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+.forgot-link a {
+  color: var(--brand-accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.forgot-link a:hover {
+  color: var(--brand-main);
+  text-decoration: underline;
+}
+
+/* ===== Animation ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
