@@ -19,6 +19,7 @@ import EditGroup from "./pages/EditGroup";
 import CreateGroup from "./pages/CreateGroup";
 import EditGroupInfo from "./pages/EditGroupInfo";
 import GroupInfo from "./pages/GroupInfo";
+import ForgotPassword from "./pages/forgotPassword";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -36,6 +37,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-Password" element={<ForgotPassword />} />
 
         {/* Protected Routes */}
         <Route
