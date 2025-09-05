@@ -47,6 +47,7 @@
   font-size: 15px;
   transition: all 0.25s ease;
   background: var(--bg-light);
+  box-sizing: border-box;   /* ✅ keeps consistent sizing */
 }
 
 .signup-form input:focus {
@@ -55,11 +56,12 @@
   box-shadow: 0 0 0 3px rgba(51, 78, 172, 0.25);
 }
 
-/* ===== Button ===== */
+/* ===== Button (aligned with inputs) ===== */
 .signup-form button {
   width: 100%;
-  padding: 12px;
-  margin-top: 10px;
+  display: block;            /* ✅ same layout as inputs */
+  padding: 12px 14px;
+  margin: 10px 0 0;
   background: linear-gradient(135deg, var(--brand-main), var(--brand-dark));
   color: white;
   font-weight: 700;
@@ -68,6 +70,7 @@
   border-radius: 10px;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;   /* ✅ ensures perfect width alignment */
 }
 
 .signup-form button:hover {
