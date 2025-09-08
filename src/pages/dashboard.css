@@ -141,10 +141,13 @@ body { background: var(--bg-light); }
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
-  transition: opacity .2s ease, transform .15s ease;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: opacity .2s ease, transform .15s ease, background .2s ease;
 }
 .nav-profile-btn:hover {
-  opacity: 0.9;
+  background: rgba(255, 255, 255, 0.18);
+  opacity: 1;
   transform: translateY(-1px);
 }
 .nav-profile-btn .material-symbols-outlined {
@@ -153,7 +156,6 @@ body { background: var(--bg-light); }
 .nav-username {
   font-weight: 700;
 }
-
 
 /* =============== Dashboard Content =============== */
 .dashboard-container {
@@ -177,6 +179,7 @@ body { background: var(--bg-light); }
   color: var(--brand-dark);
   margin: 0 0 4px;
   font-size: 26px;
+  font-weight: 500; /* lighter overall */
 }
 .subtle {
   margin: 0;
@@ -208,11 +211,18 @@ body { background: var(--bg-light); }
   font-size: 14px;
   color: var(--text);
 }
+.searchbar:focus-within {
+  border-color: var(--brand-accent);
+  box-shadow: 0 0 0 3px rgba(112, 150, 209, 0.25);
+}
 
 /* Section title */
 .section-title h2 {
-  margin: 6px 2px 0;
+  margin: 6px 2px 10px;
   color: var(--brand-main);
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--brand-accent);
+  display: inline-block;
 }
 
 /* =============== Groups Grid + Cards =============== */
@@ -231,12 +241,13 @@ body { background: var(--bg-light); }
   padding: 14px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.06);
   border: 1px solid var(--brand-light);
-  transition: transform .2s ease, box-shadow .25s ease, border-color .2s ease;
+  transition: transform .2s ease, box-shadow .25s ease, border-color .2s ease, background .25s ease;
 }
 .group-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 32px rgba(0,0,0,0.08);
+  background: linear-gradient(180deg, #fff 0%, var(--brand-bg) 100%);
+  transform: translateY(-4px) scale(1.01);
   border-color: var(--brand-accent);
+  box-shadow: 0 18px 32px rgba(0,0,0,0.08);
 }
 
 .group-card-top {
@@ -288,7 +299,7 @@ body { background: var(--bg-light); }
   opacity: 0;
   transform: translateY(12px);
   animation: fadeInUp .45s ease forwards;
-  background: var(--brand-light);
+  background: linear-gradient(135deg, var(--brand-light), var(--brand-bg));
   border-radius: 16px;
   padding: 28px 18px;
   text-align: center;
@@ -423,7 +434,7 @@ body { background: var(--bg-light); }
 }
 .mobile-sidebar a.active {
   background: var(--brand-light);
-  color: var(--brand-dark);
+  color: var(--brand-main);
   border-left-color: var(--brand-main);
   font-weight: 700;
 }
