@@ -1,79 +1,175 @@
+:root {
+  --brand-dark: #081f5c;
+  --brand-main: #334eac;
+  --brand-accent: #7096d1;
+  --brand-light: #d0e3ff;
+  --brand-bg: #e7f1ff;
+  --bg-light: #f9fcff;
+  --text: #1b1f24;
+  --muted: #6b7280;
+}
+
+/* ===== Container ===== */
 .create-group-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+  background: var(--bg-light);
+  min-height: 100vh;
+}
+
+/* ===== Card ===== */
+.create-group-card {
+  background: #fff;
+  padding: 28px 26px;
+  border-radius: 16px;
+  box-shadow: 0 8px 22px rgba(8, 31, 92, 0.08);
+  width: 100%;
   max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
-  background: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+  animation: fadeInUp 0.6s ease forwards; /* ✅ fixed */
+}
+
+/* ===== Header ===== */
+.card-header {
+  background: linear-gradient(135deg, var(--brand-main), var(--brand-dark));
+  padding: 14px 18px;
+  border-radius: 12px 12px 0 0;
+  margin: -28px -26px 20px;
   text-align: center;
 }
 
-.create-group-container h2 {
-  color: #1e90ff;
-  margin-bottom: 20px;
+.card-header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+}
+
+/* ===== Form ===== */
+.create-group-form {
+  display: flex;
+  flex-direction: column;
 }
 
 .create-group-form label {
-  display: block;
-  margin: 10px 0 5px;
-  font-weight: bold;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: var(--brand-main);
   text-align: left;
 }
 
 .create-group-form input,
 .create-group-form textarea {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 12px 14px;
   margin-bottom: 15px;
+  border: 1px solid var(--brand-light);
+  border-radius: 10px;
+  font-size: 15px;
+  background: var(--bg-light);
+  transition: all 0.25s ease;
 }
 
-.create-group-form input[type="file"] {
-  border: none;
+.create-group-form input:focus,
+.create-group-form textarea:focus {
+  border-color: var(--brand-main);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(51, 78, 172, 0.2);
 }
 
-.create-group-form button {
-  background-color: #1e90ff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
+textarea {
+  resize: none;
+  min-height: 90px;
+}
+
+/* File Upload */
+.file-upload input[type="file"] {
+  padding: 10px;
+  border: 1px solid var(--brand-light);
+  border-radius: 10px;
+  background: var(--bg-light);
   cursor: pointer;
-  width: 100%;
-  font-size: 16px;
+  transition: border-color 0.25s ease, background 0.25s ease;
 }
 
-.create-group-form button:hover {
-  background-color: #0a4d8c;
+.file-upload input[type="file"]:hover {
+  border-color: var(--brand-accent);
+  background: var(--brand-bg);
 }
 
-.success-message {
-  background-color: #d4edda;
-  color: #155724;
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 15px;
-  font-weight: bold;
-  text-align: center;
-}
-
+/* ===== Buttons ===== */
 .button-group {
   display: flex;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap; /* ✅ ensures responsiveness */
 }
 
-.close-btn {
-  background-color: #ccc;
-  color: #333;
+.primary-btn {
+  flex: 1;
+  background: linear-gradient(135deg, var(--brand-main), var(--brand-dark));
+  color: #fff;
+  justify-content: center;
   border: none;
-  padding: 10px;
-  border-radius: 5px;
+  border-radius: 10px;
+  padding: 12px;
+  font-weight: 700;
   cursor: pointer;
+  box-shadow: 0 6px 18px rgba(8, 31, 92, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
 }
 
-.close-btn:hover {
-  background-color: #999;
+.primary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(8, 31, 92, 0.35);
+}
+
+.ghost-btn {
+  flex: 1;
+  padding: 12px;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid var(--brand-light);
+  background: #fff;
+  color: var(--brand-main);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.ghost-btn:hover {
+  background: var(--brand-bg);
+  transform: translateY(-1px);
+}
+
+/* ===== Success Message ===== */
+.success-message {
+  background: var(--brand-light);
+  color: var(--brand-dark);
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-weight: 600;
+  text-align: center;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+/* ===== Animations ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+  .button-group {
+    flex-direction: column;
+  }
 }
