@@ -73,21 +73,6 @@
   box-shadow: 0 6px 18px rgba(8, 31, 92, 0.3);
 }
 
-.secondary-btn {
-  padding: 12px 22px;
-  background: var(--bg-light);
-  border: 2px solid var(--brand-main);
-  color: var(--brand-main);
-  font-weight: 700;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.secondary-btn:hover {
-  background: var(--brand-light);
-  transform: translateY(-2px);
-}
 
 /* ===== Animations ===== */
 @keyframes fadeInUp {
