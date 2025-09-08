@@ -11,7 +11,7 @@ function Home() {
             <button className="primary-btn">Login</button>
           </a>
           <a href="/signup">
-            <button className="secondary-btn">Sign Up</button>
+            <button className="primary-btn">Sign Up</button>
           </a>
         </div>
       </header>
