@@ -124,27 +124,36 @@ body { background: var(--bg-light); }
   color: #fff;
 }
 
-.nav-avatar-btn {
+/* Greeting highlight */
+.highlight-name {
+  color: var(--brand-main);
+  font-weight: 800;
+}
+
+/* Navbar profile (desktop/tablet) */
+.nav-profile-btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 6px;
   background: transparent;
   border: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
   cursor: pointer;
-  border-radius: 999px;
-  padding: 2px;
-  transition: background .2s ease, transform .15s ease;
+  transition: opacity .2s ease, transform .15s ease;
 }
-.nav-avatar-btn:hover {
-  background: rgba(255,255,255,0.2);
+.nav-profile-btn:hover {
+  opacity: 0.9;
   transform: translateY(-1px);
 }
-.nav-profile-pic {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
+.nav-profile-btn .material-symbols-outlined {
+  font-size: 26px;
 }
+.nav-username {
+  font-weight: 700;
+}
+
 
 /* =============== Dashboard Content =============== */
 .dashboard-container {

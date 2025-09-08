@@ -2,7 +2,6 @@ import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import logo from '../assets/logo.png';
 import "./dashboard.css";
-
 import { useNavigate, NavLink, useLocation } from "react-router-dom";
 
 const APP_NAME = "BomaFund";
@@ -28,6 +27,9 @@ function Dashboard({ user }) {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Extract first name
+  const firstName = user?.fullName?.split(" ")[0] || user?.fullName || "User";
 
   // Fetch groups
   const fetchGroups = useCallback(async () => {
@@ -61,11 +63,7 @@ function Dashboard({ user }) {
     <div className="dashboard-wrap">
       {/* Brand strip */}
       <div className="brand-bar">
-        <img
-          src={logo}
-          alt="App Logo"
-          className="brand-logo"
-        />
+        <img src={logo} alt="App Logo" className="brand-logo" />
         <span className="brand-name">{APP_NAME}</span>
       </div>
 
@@ -80,16 +78,13 @@ function Dashboard({ user }) {
         </div>
 
         <button
-          className="nav-avatar-btn"
+          className="nav-profile-btn"
           onClick={() => navigate("/profile")}
           aria-label="Open Profile"
           title="Profile"
         >
-          <img
-            src="/default-avatar.png"
-            alt="Profile"
-            className="nav-profile-pic"
-          />
+          <span className="material-symbols-outlined">account_circle</span>
+          <span className="nav-username">{firstName}</span>
         </button>
       </nav>
 
@@ -120,7 +115,8 @@ function Dashboard({ user }) {
         <header className="dash-header fade-in-up">
           <div className="greeting">
             <h1>
-              {getGreeting()} {user?.fullName} {getEmoji()}
+              {getGreeting()}{" "}
+              <span className="highlight-name">{firstName}</span> {getEmoji()}
             </h1>
             <p className="subtle">Here’s a quick snapshot of your contribution groups.</p>
           </div>
