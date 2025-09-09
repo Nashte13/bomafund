@@ -31,7 +31,7 @@
 
 /* Mobile */
 .app-sidebar.mobile {
-  width: 240px;
+  width: 250px;
   transform: translateX(-120%);
 }
 
@@ -72,13 +72,13 @@
   background: rgba(255, 255, 255, 0.1);
   border: none;
   color: var(--brand-light);
-  font-size: 24px;
+  font-size: 26px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  padding: 6px;
+  padding: 8px;
   transition: background 0.25s ease, transform 0.2s ease;
 }
 .sidebar-burger:hover {
@@ -109,8 +109,8 @@
 .app-sidebar nav a {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
+  gap: 14px;
+  padding: 12px 14px;
   border-radius: 10px;
   color: var(--brand-light);
   text-decoration: none;
@@ -133,12 +133,16 @@
   box-shadow: 0 4px 12px rgba(112, 150, 209, 0.3);
 }
 
-/* Show text when expanded */
+.app-sidebar nav a span.material-symbols-outlined {
+  font-size: 22px;
+}
+
 .app-sidebar nav a p {
   display: none;
 }
 .app-sidebar.open nav a p {
   display: block;
+  font-size: 15px;
 }
 
 /* ===== Collapsed alignment ===== */
@@ -180,5 +184,18 @@
     left: 0;
     bottom: 0;
     border-radius: 0;
+  }
+
+  .app-sidebar nav a {
+    padding: 16px;
+    font-size: 16px;
+  }
+
+  .app-sidebar nav a span.material-symbols-outlined {
+    font-size: 26px; /* ✅ larger icons for finger taps */
+  }
+
+  .app-sidebar nav a p {
+    font-size: 16px; /* ✅ slightly bigger labels */
   }
 }
