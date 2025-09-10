@@ -18,35 +18,39 @@ function GroupInfo({ user }) {
   // Toast state
   const [toast, setToast] = useState({ message: "", type: "" });
 
+  // fetch group
   useEffect(() => {
+    let mounted = true;
     const fetchGroup = async () => {
       try {
         const res = await axios.get(`http://localhost:5000/api/groups/${groupId}`);
+        if (!mounted) return;
         setGroup(res.data.group);
       } catch (err) {
         console.error("❌ Error fetching group info:", err);
       }
     };
     fetchGroup();
+    return () => { mounted = false; };
   }, [groupId]);
 
   if (!group) {
     return <p className="loading">Loading group info...</p>;
   }
 
-  // ✅ DB uses leaderId (not creatorId)
+  // leader check
   const isLeader = user && group.leaderId === user.id;
 
-  // --- Toast Helper ---
+  // --- Toast helper ---
   const showToast = (message, type = "success") => {
     setToast({ message, type });
-    setTimeout(() => setToast({ message: "", type: "" }), 3000);
+    setTimeout(() => setToast({ message: "", type: "" }), 3200);
   };
 
-  // --- Handlers ---
+  // Handlers
   const handleEditGroupInfo = () => {
     if (!isLeader) {
-      showToast("❌ Only the Group creator can edit the group info.", "error");
+      showToast("Only the group leader can edit the group info.", "error");
       return;
     }
     navigate(`/group/${groupId}/edit-info`);
@@ -57,11 +61,11 @@ function GroupInfo({ user }) {
       await axios.delete(
         `http://localhost:5000/api/groups/${groupId}/members/${user.id}`
       );
-      showToast("🚪 You have left this group.", "success");
-      setTimeout(() => navigate("/dashboard"), 1000);
+      showToast("You have left this group.", "success");
+      setTimeout(() => navigate("/dashboard"), 900);
     } catch (err) {
       console.error("❌ Error exiting group:", err);
-      showToast("❌ Failed to exit group. Please try again.", "error");
+      showToast("Failed to exit group. Try again.", "error");
     }
   };
 
@@ -70,107 +74,137 @@ function GroupInfo({ user }) {
       await axios.delete(
         `http://localhost:5000/api/groups/${groupId}/delete/${user.id}`
       );
-      showToast("✅ Group deleted successfully.", "success");
-      setTimeout(() => navigate("/dashboard"), 1000);
+      showToast("Group deleted successfully.", "success");
+      setTimeout(() => navigate("/dashboard"), 900);
     } catch (err) {
       console.error("❌ Error deleting group:", err);
-      showToast("❌ Failed to delete group. Please try again.", "error");
+      showToast("Failed to delete group. Try again.", "error");
     }
   };
+
+  // UI: fallback initial
+  const initial = (group.name || "G").trim().charAt(0).toUpperCase();
 
   return (
     <div className="group-info-layout">
       {/* Sidebar */}
-      <GroupSidebar 
-        menuOpen={menuOpen} 
-        onClose={() => setMenuOpen(false)} 
-        groupName={group.name} 
+      <GroupSidebar
+        menuOpen={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        groupName={group.name}
       />
+
+      {/* Mobile hamburger (controls sidebar) */}
+      <button
+        className={`mobile-hamburger ${menuOpen ? "open" : ""}`}
+        onClick={() => setMenuOpen((v) => !v)}
+        aria-label={menuOpen ? "Close menu" : "Open menu"}
+      >
+        <span className="material-symbols-outlined">
+          {menuOpen ? "close" : "menu"}
+        </span>
+      </button>
 
       {/* Main content */}
       <main className="group-info-container">
-        <div className="group-info-cardx">
-          {/* Group Logo */}
-          <div className="group-logo-holderx">
-            {group.profilePicture ? (
-              <img src={group.profilePicture} alt="Group Logo" className="group-logox" />
-            ) : (
-              <div className="group-logo-placeholderx">
-                {group.name?.charAt(0).toUpperCase()}
-              </div>
-            )}
+        <section className="group-info-card">
+          {/* header strip */}
+          <div className="card-strip" aria-hidden="true" />
+
+          <div className="group-top">
+            {/* logo */}
+            <div className="group-logo-holder">
+              {group.profilePicture ? (
+                <img
+                  src={group.profilePicture}
+                  alt={`${group.name} logo`}
+                  className="group-logo"
+                />
+              ) : (
+                <div className="group-logo-placeholder">{initial}</div>
+              )}
+            </div>
+
+            {/* details */}
+            <div className="group-details">
+              <h1 className="group-name">{group.name}</h1>
+              <p className="group-meta"><strong>Motto:</strong> {group.motto || "No motto set"}</p>
+              <p className="group-meta"><strong>Mission:</strong> {group.mission || "No mission set"}</p>
+            </div>
           </div>
 
-          {/* Group Details */}
-          <h1>{group.name}</h1>
-          <p><strong>Motto:</strong> {group.motto || "No motto set"}</p>
-          <p><strong>Mission:</strong> {group.mission || "No mission set"}</p>
-
-          {/* Buttons */}
-          <div className="group-info-actionsx">
-            <button className="edit-btn" onClick={handleEditGroupInfo}>
+          {/* action buttons */}
+          <div className="group-info-actions">
+            <button className="primary-btn" onClick={handleEditGroupInfo}>
+              <span className="material-symbols-outlined">edit</span>
               Edit Group Info
             </button>
 
-            <button className="exit-btn" onClick={() => setShowExitModal(true)}>
+            <button
+              className="ghost-btn warning"
+              onClick={() => setShowExitModal(true)}
+            >
+              <span className="material-symbols-outlined">exit_to_app</span>
               Exit Group
             </button>
 
             {isLeader && (
-              <button 
-                className="delete-btn" 
+              <button
+                className="ghost-btn danger"
                 onClick={() => setShowDeleteModal(true)}
               >
+                <span className="material-symbols-outlined">delete_forever</span>
                 Delete Group
               </button>
             )}
           </div>
-        </div>
+        </section>
+
+        {/* footer (stays after content) */}
+        <footer className="group-footer">
+          <p>© {new Date().getFullYear()} BomaFund — All rights reserved.</p>
+        </footer>
       </main>
 
-      {/* --- Exit Confirmation Modal --- */}
+      {/* Exit Modal */}
       {showExitModal && (
-        <div className="modal-overlay">
-          <div className="modal-box">
-            <h3>🚪 Leave Group</h3>
-            <p>Are you sure you want to exit <strong>{group.name}</strong>?</p>
+        <div className="modal-overlay" onClick={() => setShowExitModal(false)}>
+          <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-strip" />
+            <h3>Leave Group</h3>
+            <p>Are you sure you want to leave <strong>{group.name}</strong>?</p>
             <div className="modal-actions">
-              <button className="cancel-btn" onClick={() => setShowExitModal(false)}>
-                Cancel
-              </button>
-              <button className="confirm-exit-btn" onClick={confirmExitGroup}>
-                Yes, Exit
-              </button>
+              <button className="ghost-btn" onClick={() => setShowExitModal(false)}>Cancel</button>
+              <button className="primary-btn warning" onClick={confirmExitGroup}>Yes, Leave</button>
             </div>
           </div>
         </div>
       )}
 
-      {/* --- Delete Confirmation Modal --- */}
+      {/* Delete Modal */}
       {showDeleteModal && (
-        <div className="modal-overlay">
-          <div className="modal-box">
-            <h3>⚠️ Confirm Delete</h3>
+        <div className="modal-overlay" onClick={() => setShowDeleteModal(false)}>
+          <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-strip danger" />
+            <h3>Confirm Delete</h3>
             <p>
-              Are you sure you want to delete <strong>{group.name}</strong>?<br/>
-              This action cannot be undone.
+              Delete <strong>{group.name}</strong>? This action cannot be undone.
             </p>
             <div className="modal-actions">
-              <button className="cancel-btn" onClick={() => setShowDeleteModal(false)}>
-                Cancel
-              </button>
-              <button className="confirm-delete-btn" onClick={confirmDeleteGroup}>
-                Yes, Delete
-              </button>
+              <button className="ghost-btn" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+              <button className="primary-btn danger" onClick={confirmDeleteGroup}>Yes, Delete</button>
             </div>
           </div>
         </div>
       )}
 
-      {/* --- Toast Notification --- */}
+      {/* Toast */}
       {toast.message && (
         <div className={`toast ${toast.type}`}>
-          {toast.message}
+          <span className="material-symbols-outlined toast-icon">
+            {toast.type === "error" ? "error_outline" : "check_circle"}
+          </span>
+          <div className="toast-text">{toast.message}</div>
         </div>
       )}
     </div>
