@@ -17,14 +17,17 @@ function GroupHome() {
         const response = await axios.get(
           `http://localhost:5000/api/groups/${groupId}`
         );
-        setGroup(response.data.group);
+        // safe access — expect response.data.group but fallback gracefully
+        setGroup(response.data?.group ?? null);
       } catch (error) {
         console.error(
           "❌ Error fetching group details:",
           error.response?.data || error.message
         );
+        setGroup(null);
       }
     };
+
     fetchGroup();
   }, [groupId]);
 
@@ -34,23 +37,45 @@ function GroupHome() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Loading / pulsing-dots loader
   if (!group) {
-    return <p className="loading">Loading group details...</p>;
+    return (
+      <div className="group-home-layout">
+        <div className="loader-wrap">
+          <div className="loader-card">
+            <div className="loader-spinner" />
+            <h2 className="loader-title">Loading group...</h2>
+            <div className="pulsing-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
-  // First letter fallback for logo
+  // First-letter fallback
   const initial = group?.name?.trim()?.charAt(0)?.toUpperCase() || "G";
+
+  // Stats (defensive)
+  const membersCount = group?.members?.length ?? 0;
+  const contributionsAmount =
+    typeof group?.totalContributions === "number"
+      ? group.totalContributions
+      : group?.contributionsAmount ?? 0;
 
   return (
     <div className="group-home-layout">
-      {/* ✅ Sidebar controlled from here */}
+      {/* Sidebar controlled from parent */}
       <GroupSidebar
         menuOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
         groupName={group.name}
       />
 
-      {/* ✅ Mobile Hamburger Button */}
+      {/* Mobile Hamburger Button (controls sidebar) */}
       {isMobile && (
         <button
           className={`mobile-hamburger ${menuOpen ? "open" : ""}`}
@@ -63,18 +88,31 @@ function GroupHome() {
         </button>
       )}
 
-      {/* ✅ Main Content */}
+      {/* Main content */}
       <main className="group-home-container">
-        {/* Header block with details left, logo right (mobile stacks) */}
-        <div className="group-info-card group-header">
+        {/* Header card with top accent strip */}
+        <div className="group-info-card group-header fade-in-up">
+          <div className="card-strip" aria-hidden="true" />
+
           <div className="group-meta">
-            <h1>Welcome to {group.name}</h1>
-            <p>
+            <h1 className="group-title">Welcome to <span className="group-name">{group.name}</span></h1>
+            <p className="muted-line">
               <strong>Motto:</strong> {group.motto || "No motto set"}
             </p>
-            <p>
+            <p className="muted-line">
               <strong>Mission:</strong> {group.mission || "No mission set"}
             </p>
+
+            <div className="header-cta">
+              <button className="ghost-btn" onClick={() => navigate(`/group/${groupId}/info`)}>
+                <span className="material-symbols-outlined">info</span>
+                Group Info
+              </button>
+              <button className="primary-btn" onClick={() => navigate(`/group/${groupId}/projects`)}>
+                <span className="material-symbols-outlined">folder</span>
+                View Projects
+              </button>
+            </div>
           </div>
 
           {/* Logo or fallback initial */}
@@ -82,10 +120,10 @@ function GroupHome() {
             <img
               src={group.profilePicture}
               alt={`${group.name} logo`}
-              className="group-logo"
+              className="group-logo animated-logo"
             />
           ) : (
-            <div className="group-logo-fallback" aria-label="Group logo">
+            <div className="group-logo-fallback animated-logo" aria-label="Group logo">
               {initial}
             </div>
           )}
@@ -96,34 +134,66 @@ function GroupHome() {
           <div
             className="overview-card"
             onClick={() => navigate(`/group/${groupId}/members`)}
+            role="button"
+            tabIndex={0}
           >
-            <h3>👥 Members</h3>
-            <p>{group.members?.length || 0}</p>
+            <div className="overview-icon">
+              <span className="material-symbols-outlined">groups</span>
+            </div>
+            <h3>Members</h3>
+            <p className="stat-number">{membersCount}</p>
+            <p className="stat-muted">Tap to manage members</p>
           </div>
 
           <div
             className="overview-card"
             onClick={() => navigate(`/group/${groupId}/contributions`)}
+            role="button"
+            tabIndex={0}
           >
-            <h3>💰 Contributions</h3>
-            <p>KES 0</p>
+            <div className="overview-icon">
+              <span className="material-symbols-outlined">payments</span>
+            </div>
+            <h3>Contributions</h3>
+            <p className="stat-number">KES {contributionsAmount || 0}</p>
+            <p className="stat-muted">Overview of funds</p>
           </div>
 
           <div
             className="overview-card"
             onClick={() => navigate(`/group/${groupId}/projects`)}
+            role="button"
+            tabIndex={0}
           >
-            <h3>📂 Projects</h3>
-            <p>0</p>
+            <div className="overview-icon">
+              <span className="material-symbols-outlined">folder</span>
+            </div>
+            <h3>Projects</h3>
+            <p className="stat-number">{group.projects?.length ?? 0}</p>
+            <p className="stat-muted">Track group projects</p>
           </div>
 
           <div
             className="overview-card"
             onClick={() => navigate(`/group/${groupId}/communications`)}
+            role="button"
+            tabIndex={0}
           >
-            <h3>💬 Messages</h3>
-            <p>0</p>
+            <div className="overview-icon">
+              <span className="material-symbols-outlined">chat</span>
+            </div>
+            <h3>Messages</h3>
+            <p className="stat-number">{group.unreadMessages ?? 0}</p>
+            <p className="stat-muted">Open chat & announcements</p>
           </div>
+        </div>
+
+        {/* Small footer CTA */}
+        <div className="more-actions">
+          <button className="ghost-btn" onClick={() => navigate("/dashboard")}>
+            <span className="material-symbols-outlined">dashboard</span>
+            Back to Dashboard
+          </button>
         </div>
       </main>
     </div>
