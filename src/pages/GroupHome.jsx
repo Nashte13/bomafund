@@ -17,7 +17,6 @@ function GroupHome() {
         const response = await axios.get(
           `http://localhost:5000/api/groups/${groupId}`
         );
-        // safe access — expect response.data.group but fallback gracefully
         setGroup(response.data?.group ?? null);
       } catch (error) {
         console.error(
@@ -37,7 +36,15 @@ function GroupHome() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Loading / pulsing-dots loader
+  // Currency formatter (KES)
+  const formatKES = (amount) =>
+    new Intl.NumberFormat("en-KE", {
+      style: "currency",
+      currency: "KES",
+      minimumFractionDigits: 0,
+    }).format(amount || 0);
+
+  // Loading state
   if (!group) {
     return (
       <div className="group-home-layout">
@@ -56,10 +63,10 @@ function GroupHome() {
     );
   }
 
-  // First-letter fallback
+  // Fallback initial
   const initial = group?.name?.trim()?.charAt(0)?.toUpperCase() || "G";
 
-  // Stats (defensive)
+  // Stats
   const membersCount = group?.members?.length ?? 0;
   const contributionsAmount =
     typeof group?.totalContributions === "number"
@@ -68,14 +75,14 @@ function GroupHome() {
 
   return (
     <div className="group-home-layout">
-      {/* Sidebar controlled from parent */}
+      {/* Sidebar */}
       <GroupSidebar
         menuOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
         groupName={group.name}
       />
 
-      {/* Mobile Hamburger Button (controls sidebar) */}
+      {/* Mobile Hamburger */}
       {isMobile && (
         <button
           className={`mobile-hamburger ${menuOpen ? "open" : ""}`}
@@ -88,14 +95,16 @@ function GroupHome() {
         </button>
       )}
 
-      {/* Main content */}
+      {/* Main Content */}
       <main className="group-home-container">
-        {/* Header card with top accent strip */}
+        {/* Header */}
         <div className="group-info-card group-header fade-in-up">
           <div className="card-strip" aria-hidden="true" />
 
           <div className="group-meta">
-            <h1 className="group-title">Welcome to <span className="group-name">{group.name}</span></h1>
+            <h1 className="group-title">
+              Welcome to <span className="group-name">{group.name}</span>
+            </h1>
             <p className="muted-line">
               <strong>Motto:</strong> {group.motto || "No motto set"}
             </p>
@@ -104,18 +113,24 @@ function GroupHome() {
             </p>
 
             <div className="header-cta">
-              <button className="ghost-btn" onClick={() => navigate(`/group/${groupId}/info`)}>
+              <button
+                className="ghost-btn"
+                onClick={() => navigate(`/group/${groupId}/info`)}
+              >
                 <span className="material-symbols-outlined">info</span>
                 Group Info
               </button>
-              <button className="primary-btn" onClick={() => navigate(`/group/${groupId}/projects`)}>
-                <span className="material-symbols-outlined">folder</span>
-                View Projects
+              <button
+                className="primary-btn"
+                onClick={() => navigate(`/group/${groupId}/contributions`)}
+              >
+                <span className="material-symbols-outlined">payments</span>
+                View Contributions
               </button>
             </div>
           </div>
 
-          {/* Logo or fallback initial */}
+          {/* Logo / fallback */}
           {group.profilePicture ? (
             <img
               src={group.profilePicture}
@@ -123,13 +138,16 @@ function GroupHome() {
               className="group-logo animated-logo"
             />
           ) : (
-            <div className="group-logo-fallback animated-logo" aria-label="Group logo">
+            <div
+              className="group-logo-fallback animated-logo"
+              aria-label="Group logo"
+            >
               {initial}
             </div>
           )}
         </div>
 
-        {/* Quick Stats Overview */}
+        {/* Stats */}
         <div className="group-overview-section">
           <div
             className="overview-card"
@@ -142,7 +160,7 @@ function GroupHome() {
             </div>
             <h3>Members</h3>
             <p className="stat-number">{membersCount}</p>
-            <p className="stat-muted">Tap to manage members</p>
+            <p className="stat-muted">Tap to view Members</p>
           </div>
 
           <div
@@ -155,7 +173,7 @@ function GroupHome() {
               <span className="material-symbols-outlined">payments</span>
             </div>
             <h3>Contributions</h3>
-            <p className="stat-number">KES {contributionsAmount || 0}</p>
+            <p className="stat-number">{formatKES(contributionsAmount)}</p>
             <p className="stat-muted">Overview of funds</p>
           </div>
 
@@ -188,13 +206,17 @@ function GroupHome() {
           </div>
         </div>
 
-        {/* Small footer CTA */}
+        {/* Footer CTA + Footer */}
         <div className="more-actions">
           <button className="ghost-btn" onClick={() => navigate("/dashboard")}>
             <span className="material-symbols-outlined">dashboard</span>
             Back to Dashboard
           </button>
         </div>
+
+        <footer className="group-home-footer">
+          <p>© {new Date().getFullYear()} BomaFund. All rights reserved.</p>
+        </footer>
       </main>
     </div>
   );
