@@ -12,16 +12,14 @@ function GroupInfo({ user }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  
-
   // Modals
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
 
-  // Toast state
+  // Toast
   const [toast, setToast] = useState({ message: "", type: "" });
 
-  //resize listener
+  // resize listener
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", handleResize);
@@ -41,23 +39,24 @@ function GroupInfo({ user }) {
       }
     };
     fetchGroup();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, [groupId]);
 
   if (!group) {
-    return <p className="loading">Loading group info...</p>;
+    return <p className="group-info-loading">Loading group info...</p>;
   }
 
-  // leader check
   const isLeader = user && group.leaderId === user.id;
 
-  // --- Toast helper ---
+  // Toast helper
   const showToast = (message, type = "success") => {
     setToast({ message, type });
     setTimeout(() => setToast({ message: "", type: "" }), 3200);
   };
 
-  // Handlers
+  // handlers
   const handleEditGroupInfo = () => {
     if (!isLeader) {
       showToast("Only the group leader can edit the group info.", "error");
@@ -92,7 +91,7 @@ function GroupInfo({ user }) {
     }
   };
 
-  // UI: fallback initial
+  // fallback logo initial
   const initial = (group.name || "G").trim().charAt(0).toUpperCase();
 
   return (
@@ -104,44 +103,45 @@ function GroupInfo({ user }) {
         groupName={group.name}
       />
 
-      {/* Mobile hamburger (controls sidebar) */}
+      {/* Mobile hamburger */}
       {isMobile && (
         <button
-        className={`mobile-hamburger ${menuOpen ? "open" : ""}`}
-        onClick={() => setMenuOpen((v) => !v)}
-        aria-label={menuOpen ? "Close menu" : "Open menu"}
-      >
-        <span className="material-symbols-outlined">
-          {menuOpen ? "close" : "menu"}
-        </span>
-      </button>
+          className={`mobile-hamburger-info ${menuOpen ? "open" : ""}`}
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+        >
+          <span className="material-symbols-outlined">
+            {menuOpen ? "close" : "menu"}
+          </span>
+        </button>
       )}
 
       {/* Main content */}
       <main className="group-info-container">
         <section className="group-info-card1">
-          {/* header strip */}
-          <div className="card-strip" aria-hidden="true" />
+          <div className="group-info-card-strip" aria-hidden="true" />
 
-          <div className="group-top">
-            {/* logo */}
-            <div className="group-logo-holder">
+          <div className="group-info-top">
+            <div className="group-info-logo-holder">
               {group.profilePicture ? (
                 <img
                   src={group.profilePicture}
                   alt={`${group.name} logo`}
-                  className="group-logo"
+                  className="group-info-logo"
                 />
               ) : (
-                <div className="group-logo-placeholder">{initial}</div>
+                <div className="group-info-logo-placeholder">{initial}</div>
               )}
             </div>
 
-            {/* details */}
-            <div className="group-details">
-              <h1 className="group-name">{group.name}</h1>
-              <p className="group-meta"><strong>Motto:</strong> {group.motto || "No motto set"}</p>
-              <p className="group-meta"><strong>Mission:</strong> {group.mission || "No mission set"}</p>
+            <div className="group-info-details">
+              <h1 className="group-info-name">{group.name}</h1>
+              <p className="group-info-meta">
+                <strong>Motto:</strong> {group.motto || "No motto set"}
+              </p>
+              <p className="group-info-meta">
+                <strong>Mission:</strong> {group.mission || "No mission set"}
+              </p>
             </div>
           </div>
 
@@ -172,22 +172,39 @@ function GroupInfo({ user }) {
           </div>
         </section>
 
-        {/* footer (stays after content) */}
-        <footer className="group-footer">
+        <footer className="group-info-footer">
           <p>© {new Date().getFullYear()} BomaFund — All rights reserved.</p>
         </footer>
       </main>
 
       {/* Exit Modal */}
       {showExitModal && (
-        <div className="modal-overlay" onClick={() => setShowExitModal(false)}>
-          <div className="modal-box" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-strip" />
+        <div
+          className="group-info-modal-overlay"
+          onClick={() => setShowExitModal(false)}
+        >
+          <div
+            className="group-info-modal-box"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="group-info-modal-strip" />
             <h3>Leave Group</h3>
-            <p>Are you sure you want to leave <strong>{group.name}</strong>?</p>
-            <div className="modal-actions">
-              <button className="ghost-btn" onClick={() => setShowExitModal(false)}>Cancel</button>
-              <button className="primary-btn warning" onClick={confirmExitGroup}>Yes, Leave</button>
+            <p>
+              Are you sure you want to leave <strong>{group.name}</strong>?
+            </p>
+            <div className="group-info-modal-actions">
+              <button
+                className="ghost-btn"
+                onClick={() => setShowExitModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="primary-btn warning"
+                onClick={confirmExitGroup}
+              >
+                Yes, Leave
+              </button>
             </div>
           </div>
         </div>
@@ -195,16 +212,32 @@ function GroupInfo({ user }) {
 
       {/* Delete Modal */}
       {showDeleteModal && (
-        <div className="modal-overlay" onClick={() => setShowDeleteModal(false)}>
-          <div className="modal-box" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-strip danger" />
+        <div
+          className="group-info-modal-overlay"
+          onClick={() => setShowDeleteModal(false)}
+        >
+          <div
+            className="group-info-modal-box"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="group-info-modal-strip danger" />
             <h3>Confirm Delete</h3>
             <p>
               Delete <strong>{group.name}</strong>? This action cannot be undone.
             </p>
-            <div className="modal-actions">
-              <button className="ghost-btn" onClick={() => setShowDeleteModal(false)}>Cancel</button>
-              <button className="primary-btn danger" onClick={confirmDeleteGroup}>Yes, Delete</button>
+            <div className="group-info-modal-actions">
+              <button
+                className="ghost-btn"
+                onClick={() => setShowDeleteModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="primary-btn danger"
+                onClick={confirmDeleteGroup}
+              >
+                Yes, Delete
+              </button>
             </div>
           </div>
         </div>
@@ -212,7 +245,7 @@ function GroupInfo({ user }) {
 
       {/* Toast */}
       {toast.message && (
-        <div className={`toast ${toast.type}`}>
+        <div className={`group-info-toast ${toast.type}`}>
           <span className="material-symbols-outlined toast-icon">
             {toast.type === "error" ? "error_outline" : "check_circle"}
           </span>

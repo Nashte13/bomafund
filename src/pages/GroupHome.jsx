@@ -12,7 +12,7 @@ function GroupHome() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
-    const fetchGroup = async () => {
+    const fetchGroup = async () => { 
       try {
         const response = await axios.get(
           `http://localhost:5000/api/groups/${groupId}`
