@@ -10,6 +10,9 @@ function GroupInfo({ user }) {
 
   const [group, setGroup] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  
 
   // Modals
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -17,6 +20,13 @@ function GroupInfo({ user }) {
 
   // Toast state
   const [toast, setToast] = useState({ message: "", type: "" });
+
+  //resize listener
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // fetch group
   useEffect(() => {
@@ -95,7 +105,8 @@ function GroupInfo({ user }) {
       />
 
       {/* Mobile hamburger (controls sidebar) */}
-      <button
+      {isMobile && (
+        <button
         className={`mobile-hamburger ${menuOpen ? "open" : ""}`}
         onClick={() => setMenuOpen((v) => !v)}
         aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -104,10 +115,11 @@ function GroupInfo({ user }) {
           {menuOpen ? "close" : "menu"}
         </span>
       </button>
+      )}
 
       {/* Main content */}
       <main className="group-info-container">
-        <section className="group-info-card">
+        <section className="group-info-card1">
           {/* header strip */}
           <div className="card-strip" aria-hidden="true" />
 
